@@ -1,0 +1,44 @@
+#!/usr/bin/env perl
+
+use v5.42;
+use warnings;
+use DBI;
+use Term::Readline;
+use Crypt::Passphrase;
+
+my $users = {
+    carl => {
+        email        => 'carl@dungeoncrawlerworld.com',
+        display_name => 'Carl',
+    },
+    donut => {
+        email        => 'princess.donut@dungeoncrawlerworld.com',
+        display_name => 'Princess Donut',
+    },
+    zev => {
+        email        => 'zev@dungeoncrawlerworld.com',
+        display_name => 'Hiiiiiiiiiiii Zev!',
+    },
+};
+
+my $passphrase = Crypt::Passphrase->new( encoder => { module  => 'Argon2' } );
+
+my $dbh = DBI->connect(
+    'dbi:SQLite:var/db/registry.db',
+    { PrintError => 1, AutoCommit => 1},
+);
+for my $user ( keys $users->%*) {
+    $dbh->do( qq{
+            INSERT INTO users ( username, email, display_name, db_path, password_hash )
+            VALUES ( ?, ?, ?, ?, ? )
+        }, {},
+        (
+            $user,
+            $users->{ $user }{ email },
+            $users->{ $user }{ display_name },
+            "var/db/$user.db",
+            $passphrase->hash_password( 'foobar' )
+        ),
+    );
+}
+

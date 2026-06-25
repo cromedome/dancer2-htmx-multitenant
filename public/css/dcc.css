@@ -1,0 +1,90 @@
+/* =========================================================
+   Dungeon Crawler Carl — shared stylesheet
+   Used by: layouts/main.tt, login.tt, access-denied.tt
+   ========================================================= */
+
+/* Base */
+body {
+    background-color: #1a1a2e;
+}
+
+/* Sidebar */
+nav.left {
+    background-color: #16213e;
+}
+
+/* Brand block in sidebar and standalone pages */
+.dungeon-brand {
+    font-size: 1.1rem;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    color: #f5a623;
+    padding: 1rem;
+}
+
+.dungeon-brand span {
+    display: block;
+    font-size: 0.7rem;
+    color: #aaa;
+    font-weight: normal;
+    letter-spacing: normal;
+}
+
+/* htmx in-flight progress bar */
+#htmx-indicator {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #f5a623, #e74c3c);
+    z-index: 9999;
+}
+
+.htmx-request #htmx-indicator {
+    display: block;
+}
+
+/* Centered standalone pages (login, access-denied, index) */
+.page-centered {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.page-wrap {
+    width: 100%;
+    max-width: 480px;
+    padding: 1rem;
+}
+
+/* Brand heading used on standalone pages */
+.brand {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+}
+
+.brand-sub {
+    text-align: center;
+    color: #aaa;
+    font-size: 0.85rem;
+    margin-bottom: 2rem;
+}
+
+/* Login error message */
+#login-error {
+    color: #e74c3c;
+    font-size: 0.85rem;
+    min-height: 1.2rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+/* Access denied / splash icon */
+.page-icon {
+    font-size: 5rem;
+    display: block;
+    text-align: center;
+    margin-bottom: 1rem;
+}

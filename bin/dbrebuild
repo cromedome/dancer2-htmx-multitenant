@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+echo "Rebuilding all databases..."
+
+echo "Removing all dbs..."
+rm var/db/*
+
+echo "Rebuilding registry db..."
+sqlite3 var/db/registry.db < schema/registry.sql
+
+echo "Rebuilding tenant dbs..."
+sqlite3 var/db/carl.db < schema/tenant.sql
+sqlite3 var/db/donut.db < schema/tenant.sql
+sqlite3 var/db/zev.db < schema/tenant.sql
+
+perl bin/create-tenant-users

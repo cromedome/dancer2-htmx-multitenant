@@ -1,0 +1,16 @@
+appname: "Dungeon Crawler World"
+layout: "main"
+charset: "UTF-8"
+strict_config: 0
+
+template: "template_toolkit"
+engines:
+  template:
+    template_toolkit:
+      start_tag: '[%'
+      end_tag:   '%]'
+
+plugins:
+  CryptPassphrase:
+    encoder: 'Argon2'
+

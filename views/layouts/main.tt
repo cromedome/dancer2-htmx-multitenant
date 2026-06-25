@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>[% title %] | Dungeon Crawler Carl</title>
+    <link href="https://cdn.jsdelivr.net/npm/beercss@3/dist/cdn/beer.min.css" rel="stylesheet">
+    <link href="/css/dcc.css" rel="stylesheet">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3/dist/cdn/beer.min.js"></script>
+    <script src="https://unpkg.com/htmx.org@2/dist/htmx.min.js"></script>
+</head>
+
+<body class="dark">
+
+<div id="htmx-indicator"></div>
+
+<!--
+    DEMO TIP: To show the "page inside a page" problem, comment out the
+    HX-Request check in render() so it always returns a full layout.
+    Click any nav link — the sidebar appears inside #main-content.
+    Uncomment to fix it live.
+-->
+<nav class="left drawer l">
+    <div class="dungeon-brand">
+        <a class="row wave"
+           hx-get="/"
+           hx-target="#main-content"
+           hx-push-url="true"
+           hx-indicator="#htmx-indicator">
+            <div>⚔️ Dungeon Crawler World</div>
+        </a>
+        <span>Delve. Loot. Survive.</span>
+    </div>
+
+    <a class="row wave"
+       hx-get="/dashboard"
+       hx-target="#main-content"
+       hx-push-url="true"
+       hx-indicator="#htmx-indicator">
+        <i>home</i>
+        <div>Dashboard</div>
+    </a>
+
+    <a class="row wave"
+       hx-get="/profile"
+       hx-target="#main-content"
+       hx-push-url="true"
+       hx-indicator="#htmx-indicator">
+        <i>person</i>
+        <div>Profile</div>
+    </a>
+
+    <div class="divider"></div>
+
+    <a class="row wave"
+       hx-post="/logout"
+       hx-target="#main-content"
+       hx-indicator="#htmx-indicator">
+        <i>logout</i>
+        <div>Exit Dungeon</div>
+    </a>
+</nav>
+
+<main class="responsive" id="main-content">
+    [% content %]
+</main>
+
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!-- dashboard.tt: fragment rendered into #main-content via render() -->
+
+<div class="padding">
+
+    <h4>Welcome back, [% user.display_name || user.username %]</h4>
+    <p class="small">Floor [% stats.current_floor || '?' %] · [% stats.monsters_killed || 0 %] monsters slain</p>
+
+    <div class="space"></div>
+
+    <div class="grid">
+
+        <div class="s6 m3">
+            <div class="card border">
+                <div class="padding center-align">
+                    <i class="large">favorite</i>
+                    <h5>[% stats.hp_current || 0 %] / [% stats.hp_max || 0 %]</h5>
+                    <p class="small">Hit Points</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="s6 m3">
+            <div class="card border">
+                <div class="padding center-align">
+                    <i class="large">bolt</i>
+                    <h5>[% stats.floor_level || 1 %]</h5>
+                    <p class="small">Current Floor</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="s6 m3">
+            <div class="card border">
+                <div class="padding center-align">
+                    <i class="large">diamond</i>
+                    <h5>[% stats.gold || 0 %]</h5>
+                    <p class="small">Gold</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="s6 m3">
+            <div class="card border">
+                <div class="padding center-align">
+                    <i class="large">skull</i>
+                    <h5>[% stats.monsters_killed || 0 %]</h5>
+                    <p class="small">Monsters Killed</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="space"></div>
+
+    <h5>Recent Encounters</h5>
+
+    [% IF encounters.size %]
+    <div class="card">
+        [% FOREACH encounter IN encounters %]
+        <div class="row padding">
+            <i>[% encounter.survived ? 'check_circle' : 'cancel' %]</i>
+            <div class="max">
+                <div><strong>[% encounter.monster_name %]</strong></div>
+                <div class="small">Floor [% encounter.floor %] · [% encounter.xp_gained %] XP</div>
+            </div>
+            <span class="chip [% encounter.survived ? 'green' : 'red' %]">
+                [% encounter.survived ? 'Survived' : 'Fled' %]
+            </span>
+        </div>
+        [% UNLESS loop.last %]<div class="divider"></div>[% END %]
+        [% END %]
+    </div>
+    [% ELSE %]
+    <p class="small">No encounters recorded yet. Get moving, delver.</p>
+    [% END %]
+
+</div>

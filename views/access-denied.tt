@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Access Denied | Dungeon Crawler Carl</title>
+    <link href="https://cdn.jsdelivr.net/npm/beercss@3/dist/cdn/beer.min.css" rel="stylesheet">
+    <link href="/css/dcc.css" rel="stylesheet">
+    <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3/dist/cdn/beer.min.js"></script>
+</head>
+
+<body class="dark page-centered">
+
+<div class="page-wrap center-align">
+
+    <span class="page-icon">🚫</span>
+
+    <h3>The dungeon rejects you.</h3>
+
+    <p>
+        Your session has expired or you attempted to access an area
+        beyond your clearance level. Your actions have been noted.
+    </p>
+
+    <div class="space"></div>
+
+    <a href="/login" class="button">
+        <i>login</i>
+        <span>Try Again</span>
+    </a>
+
+</div>
+
+</body>
+</html>

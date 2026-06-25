@@ -1,0 +1,108 @@
+<!-- templates/profile.tt -->
+
+<div class="padding">
+
+    <h4>Adventurer Profile</h4>
+
+    <div class="space"></div>
+
+    <div class="card">
+        <div class="padding">
+
+            <!-- Avatar + display name -->
+            <div class="row middle-align">
+                [% IF user.profile_pic %]
+                <img class="circle large" src="[% user.profile_pic %]" alt="[% user.display_name %]">
+                [% ELSE %]
+                <div class="circle large grid middle-align center-align" style="background:#f5a623;color:#000;font-size:2rem;">
+                    ⚔️
+                </div>
+                [% END %]
+                <div class="padding">
+                    <h5 class="no-margin">[% user.display_name || user.username %]</h5>
+                    <p class="small">[% user.email %]</p>
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Editable fields -->
+            <!-- 
+                hx-post targets /profile/update and swaps just this card.
+                A successful save returns the updated fragment; errors
+                return a 422 with an error message fragment.
+            -->
+            <form hx-post="/profile/update"
+                  hx-target="#profile-card"
+                  hx-swap="outerHTML"
+                  id="profile-card">
+
+                <div class="field label border">
+                    <input type="text" name="display_name"
+                           value="[% user.display_name %]">
+                    <label>Display Name</label>
+                </div>
+
+                <div class="field label border">
+                    <input type="email" name="email"
+                           value="[% user.email %]" readonly>
+                    <label>Email</label>
+                    <span class="helper">Contact support to change your email.</span>
+                </div>
+
+                <div class="field label border">
+                    <input type="text" name="profile_pic"
+                           value="[% user.profile_pic %]"
+                           placeholder="https://...">
+                    <label>Avatar URL</label>
+                </div>
+
+                <div class="space"></div>
+
+                <button type="submit">
+                    <i>save</i>
+                    <span>Save Changes</span>
+                </button>
+
+            </form>
+
+        </div>
+    </div><!-- .card -->
+
+    <div class="space"></div>
+
+    <!-- Change password — separate targeted form -->
+    <h5>Change Password</h5>
+    <div class="card" id="password-card">
+        <div class="padding">
+            <form hx-post="/profile/password"
+                  hx-target="#password-card"
+                  hx-swap="outerHTML">
+
+                <div class="field label border">
+                    <input type="password" name="current_password">
+                    <label>Current Password</label>
+                </div>
+
+                <div class="field label border">
+                    <input type="password" name="new_password">
+                    <label>New Password</label>
+                </div>
+
+                <div class="field label border">
+                    <input type="password" name="confirm_password">
+                    <label>Confirm New Password</label>
+                </div>
+
+                <div class="space"></div>
+
+                <button type="submit">
+                    <i>lock_reset</i>
+                    <span>Update Password</span>
+                </button>
+
+            </form>
+        </div>
+    </div>
+
+</div><!-- .padding -->

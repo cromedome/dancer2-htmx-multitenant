@@ -1,0 +1,24 @@
+logger: "console"
+show_stacktrace: 1
+startup_info: 1
+
+log: "core"
+session: "YAML"
+
+plugins:
+  Database:
+    connections:
+      registry:
+        driver: SQLite
+        database: 'var/db/registry.db'
+
+engines:
+  # Normally we'd secure these but not for development. Do better
+  # in prod!
+  session:
+    YAML:
+      session_dir: "var/sessions"
+      cookie_name: dcc.session
+      cookie_same_site: Lax
+      is_secure: 0
+      is_http_only: 0
