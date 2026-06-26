@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[% title %] | Dungeon Crawler Carl</title>
+    <title>[% title %] | Dungeon Crawler World</title>
     <link href="https://cdn.jsdelivr.net/npm/beercss@3/dist/cdn/beer.min.css" rel="stylesheet">
     <link href="/css/dcc.css" rel="stylesheet">
     <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3/dist/cdn/beer.min.js"></script>
