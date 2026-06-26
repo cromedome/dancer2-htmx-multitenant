@@ -128,10 +128,10 @@ sub render( $template, $args = {} ) {
     croak "render(): No template specified!" unless $template;
 
     my $options = { layout => config->{ layout }};
-    # if( request_header( 'HX-Request' ) ) {
-    #     $options = { layout => undef };
-    #     debug 'Request is ajax, not rendering a layout'
-    # }
+    if( request_header( 'HX-Request' ) ) {
+        $options = { layout => undef };
+        debug 'Request is ajax, not rendering a layout'
+    }
 
     my $html = template( $template, $args, $options );
     return $html;
