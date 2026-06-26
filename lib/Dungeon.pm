@@ -6,7 +6,6 @@ use Carp qw( croak );
 
 use Dancer2;
 use Dancer2::Plugin::Database;
-use Dancer2::Plugin::Syntax::GetPost;
 use Dancer2::Plugin::Syntax::ParamKeywords;
 use Dancer2::Plugin::Auth::Tiny;
 use Dancer2::Plugin::CryptPassphrase;
@@ -67,7 +66,7 @@ get '/login' => sub {
 post '/login' => sub {
     my $username = body_param( 'username' ) // '';
     my $password = body_param( 'password' ) // '';
-    debug "Attempting to log in $username:$password";
+    debug "Attempting to log in $username";
 
     my $user = database( 'registry' )->quick_select(
         'users',
@@ -129,10 +128,10 @@ sub render( $template, $args = {} ) {
     croak "render(): No template specified!" unless $template;
 
     my $options = { layout => config->{ layout }};
-    if( request_header( 'HX-Request' ) ) {
-        $options = { layout => undef };
-        debug 'Request is ajax, not rendering a layout'
-    }
+    # if( request_header( 'HX-Request' ) ) {
+    #     $options = { layout => undef };
+    #     debug 'Request is ajax, not rendering a layout'
+    # }
 
     my $html = template( $template, $args, $options );
     return $html;
