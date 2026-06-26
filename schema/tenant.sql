@@ -2,7 +2,7 @@ PRAGMA journal_mode=WAL;             -- Better concurrent read performance
 PRAGMA foreign_keys=ON;              -- Enforce FK constraints
 
 CREATE TABLE IF NOT EXISTS stats (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    stat_id INTEGER PRIMARY KEY AUTOINCREMENT,
     current_floor INT NOT NULL DEFAULT 1,
     hp_current INT NOT NULL DEFAULT 1,
     hp_max INT NOT NULL DEFAULT 1,

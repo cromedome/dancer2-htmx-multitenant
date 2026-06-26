@@ -4,6 +4,7 @@
 
     <h4>Welcome back, [% user.display_name || user.username %]</h4>
     <p class="small">Floor [% stats.current_floor || '?' %] · [% stats.monsters_killed || 0 %] monsters slain</p>
+    <img class="circle large" src="[% '/images/' _ user.username _ '.png' %]" alt="[% user.display_name %]">
 
     <div class="space"></div>
 
@@ -72,7 +73,7 @@
         [% END %]
     </div>
     [% ELSE %]
-    <p class="small">No encounters recorded yet. Get moving, delver.</p>
+    <p class="small">No encounters recorded yet. Get moving, Crawler.</p>
     [% END %]
 
 </div>

@@ -20,7 +20,7 @@ hook 'before' => sub {
             'users',
             { username => $username }
         );
-        if( defined $user and $user->{ is_active } ) {
+        if( defined $user ) {
             var user => $user;
 
             debug "Connecting to tenant $username";
@@ -37,15 +37,17 @@ hook 'before' => sub {
 # App content handled here!
 #
 get '/' => sub {
-    render( 'index' );
+    template( 'index', {}, { layout => undef } );
 };
 
 get '/dashboard' => needs login => sub {
+    my $user       = var 'user';
     my $tenant_dbh = var 'tenant_dbh';
-    my $last = var('tenant_dbh')->query(
-        'SELECT * FROM encounters ORDER BY encounter_id DESC LIMIT 1'
-    )->hash;
-    render( 'dashboard' );
+
+    my $stats      = $tenant_dbh->quick_select( 'stats', {}, { limit => 1 } );
+    my @encounters = $tenant_dbh->quick_select( 'encounters', {} );
+
+    render( 'dashboard', { user => $user, stats => $stats, encounters => \@encounters } );
 };
 
 get '/profile' => needs login => sub {
@@ -65,21 +67,21 @@ get '/login' => sub {
 post '/login' => sub {
     my $username = body_param( 'username' ) // '';
     my $password = body_param( 'password' ) // '';
-    debug "Attempting to log in $username";
+    debug "Attempting to log in $username:$password";
 
     my $user = database( 'registry' )->quick_select(
         'users',
         { username => $username }
     );
 
-    if( defined $user and $user->{ is_active } and verify_password( $password, $user->{ password } )) {
+    if( defined $user and verify_password( $password, $user->{ password_hash } )) {
         app->change_session_id;
         session user => $username;
         info "User $username logged in successfully";
-        my $redirect_url = query_params( 'redirect_url' ) // '/';
+        my $redirect_url = query_params( 'redirect_url' ) // '/dashboard';
         push_response_header 'HX-Redirect' => uri_for( $redirect_url );
     } else {
-        if( not defined $user or not $user->{ is_active }) {
+        if( not defined $user ) {
             # Failure conditions happen faster than a successful login. This gives
             # attackers information about what is happening behind the scenes. Run a
             # fake password check to flatten the timing curve.
@@ -90,8 +92,6 @@ post '/login' => sub {
 
         if( not defined $user ) {
             warning "Login attempt for invalid user $username";
-        } elsif( not $user->{ is_active } ) {
-            warning "Login attempt from $username, but user is inactive";
         } else {
             warning "Failed login attempt from $username";
         }

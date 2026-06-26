@@ -10,14 +10,43 @@ my $users = {
     carl => {
         email        => 'carl@dungeoncrawlerworld.com',
         display_name => 'Carl',
+        encounters   => [
+            { monster_name => 'Goblin Murderdozer', floor => 1, xp_gained => 2500, survived => 1 },
+            { monster_name => 'Goblin Driver', floor => 1, xp_gained => 250, survived => 1 },
+            { monster_name => 'Goblin', floor => 1, xp_gained => 100, survived => 1 },
+        ],
+        stats => {
+            current_floor => 1,
+            hp_current => 7,
+            hp_max => 30,
+            gold => 10000,
+            monsters_killed => 3,
+            players_killed => 0,
+        },
     },
     donut => {
         email        => 'princess.donut@dungeoncrawlerworld.com',
         display_name => 'Princess Donut',
+        stats => {
+            current_floor => 1,
+            hp_current => 3,
+            hp_max => 3,
+            gold => 15000,
+            monsters_killed => 0,
+            players_killed => 1,
+        },
     },
     zev => {
         email        => 'zev@dungeoncrawlerworld.com',
         display_name => 'Hiiiiiiiiiiii Zev!',
+        stats => {
+            current_floor => 2,
+            hp_current => 4,
+            hp_max => 4,
+            gold => 0,
+            monsters_killed => 0,
+            players_killed => 0,
+        },
     },
 };
 
@@ -40,5 +69,38 @@ for my $user ( keys $users->%*) {
             $passphrase->hash_password( 'foobar' )
         ),
     );
+
+    my $tenant = DBI->connect(
+        "dbi:SQLite:var/db/${user}.db",
+        { PrintError => 1, AutoCommit => 1},
+    );
+    $tenant->do( qq{
+            INSERT INTO stats ( current_floor, hp_current, hp_max, gold, monsters_killed, players_killed )
+            VALUES ( ?, ?, ?, ?, ?, ? )
+        }, {},
+        (
+            $users->{ $user }{ stats }{ current_floor },
+            $users->{ $user }{ stats }{ hp_current },
+            $users->{ $user }{ stats }{ hp_max },
+            $users->{ $user }{ stats }{ gold },
+            $users->{ $user }{ stats }{ monsters_killed },
+            $users->{ $user }{ stats }{ players_killed },
+        ),
+    );
+
+    for my $encounter( $users->{ $user }{ encounters }->@* ) {
+        $tenant->do( qq{
+                INSERT INTO encounters ( monster_name, floor, xp_gained, survived )
+                VALUES ( ?, ?, ?, ? )
+            }, {},
+            (
+                $encounter->{ monster_name },
+                $encounter->{ floor },
+                $encounter->{ xp_gained },
+                $encounter->{ survived },
+            ),
+        );
+    }
+    $tenant->disconnect;
 }
 

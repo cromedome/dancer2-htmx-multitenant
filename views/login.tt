@@ -23,7 +23,8 @@
         On success: server sets HX-Redirect → browser navigates to /.
         On failure: server returns 401 + error string → swapped into #login-error.
     -->
-    <form hx-post="/login"
+    <form method="post"
+          hx-post="/login"
           hx-target="#login-error"
           hx-swap="innerHTML"
           hx-on::before-request="document.getElementById('login-error').textContent = ''">
